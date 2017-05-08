@@ -1,10 +1,10 @@
 class GameData {
 	// 空白地图块的数量
-	public static umapnum:number = 0;
+	public static unmapnum:number = 0;
 	public static mapData:number[][];
 
 	public static stepNum:number = 0;
-	public static levelStep:number = 0;
+	public static levelStepNum:number = 0;
 
 	public static elementTypes:number[];
 	public static levelreq:LevelRequire;
@@ -23,6 +23,9 @@ class GameData {
 
 	// 当前地图可使用数量
 	public static currentElementNum:number =0;
+
+	public static stageW:number = 0;
+	public static stageH:number = 0;
 
 	public static initData(){
 		GameData.mapData = [];
@@ -56,7 +59,5 @@ class GameData {
 
 	}
 
-	public static stageW:number = 0;
-	public static stageH:number = 0;
 
 }
