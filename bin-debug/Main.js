@@ -1,31 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//  Copyright (c) 2014-present, Egret Technology.
-//  All rights reserved.
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Egret nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY EGRET AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
-//  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-//  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-//  IN NO EVENT SHALL EGRET AND CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-//  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA,
-//  OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-//  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-//  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
-//  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-//////////////////////////////////////////////////////////////////////////////////////
 var __reflect = (this && this.__reflect) || function (p, c, t) {
     p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
@@ -42,14 +14,11 @@ var Main = (function (_super) {
         return _this;
     }
     Main.prototype.onAddToStage = function (event) {
-        //设置加载进度界面
-        //Config to load process interface
-        this.loadingView = new LoadingUI();
-        this.stage.addChild(this.loadingView);
+        //egret.Profiler.getInstance().run();
         //初始化Resource资源加载库
         //initiate Resource loading library
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
-        RES.loadConfig("resource/default.res.json", "resource/");
+        RES.loadConfig("resource/resource.json", "resource/");
     };
     /**
      * 配置文件加载完成,开始预加载preload资源组。
@@ -59,8 +28,6 @@ var Main = (function (_super) {
         RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
         RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
-        RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
-        RES.addEventListener(RES.ResourceEvent.ITEM_LOAD_ERROR, this.onItemLoadError, this);
         RES.loadGroup("preload");
     };
     /**
@@ -69,25 +36,15 @@ var Main = (function (_super) {
      */
     Main.prototype.onResourceLoadComplete = function (event) {
         if (event.groupName == "preload") {
-            this.stage.removeChild(this.loadingView);
             RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
             RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
-            RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
-            RES.removeEventListener(RES.ResourceEvent.ITEM_LOAD_ERROR, this.onItemLoadError, this);
             this.createGameScene();
         }
     };
     /**
-     * 资源组加载出错
+    * 资源组加载出错
      *  The resource group loading failed
-     */
-    Main.prototype.onItemLoadError = function (event) {
-        console.warn("Url:" + event.resItem.url + " has failed to load");
-    };
-    /**
-     * 资源组加载出错
-     *  The resource group loading failed
-     */
+    */
     Main.prototype.onResourceLoadError = function (event) {
         //TODO
         console.warn("Group:" + event.groupName + " has failed to load");
@@ -95,103 +52,219 @@ var Main = (function (_super) {
         //Ignore the loading failed projects
         this.onResourceLoadComplete(event);
     };
-    /**
-     * preload资源组加载进度
-     * Loading process of preload resource group
-     */
-    Main.prototype.onResourceProgress = function (event) {
-        if (event.groupName == "preload") {
-            this.loadingView.setProgress(event.itemsLoaded, event.itemsTotal);
+    Main.prototype.createGameScene = function () {
+        this._gameLayer = new egret.Sprite();
+        this.addChild(this._gameLayer);
+        this._gameLogic = new GameLogic(this._gameLayer);
+    };
+    Main.prototype.acreateGameScene = function () {
+        GameData.initData(); //初始化数据
+        var leveldata = RES.getRes("l1"); //初始化GameData数据
+        MapDataParse.createMapData(leveldata.map); //创建地图数据
+        LevelGameDataParse.parseLevelGameData(leveldata); //解析游戏关卡数据
+        //console.log("ddd");
+        //console.log(GameData.unuseeElements);
+        var mapc = new MapControl();
+        mapc.createElementAllMap();
+        console.log(GameData.mapData);
+        console.log(GameData.elements);
+        //*************** test code ******************
+        var gbg = new GameBackGround();
+        this.addChild(gbg);
+        gbg.changeBackground();
+        var cc = new egret.Sprite();
+        this.addChild(cc);
+        this.evm = new ElementViewManage(cc);
+        this.touchEnabled = true;
+        this.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.click, this);
+        /*this.darwbitmap();
+
+
+        this.drawd();
+
+
+
+        var s1:egret.Shape = new egret.Shape();
+        s1.graphics.beginFill(0x00ff00);
+        s1.graphics.lineStyle(5,0xff0000);
+        s1.graphics.drawRect(0,0,GameData.stageW,50);
+        s1.graphics.endFill();
+        s1.y = 400;
+        this.addChild(s1);
+
+        var ss:egret.Shape = new egret.Shape();
+        ss.graphics.beginFill(0x0000ff);
+        ss.graphics.lineStyle(5,0xff0000);
+        ss.graphics.drawRect(0,0,30,GameData.stageH);
+        ss.graphics.endFill();
+        ss.x = GameData.stageW - 40;
+        this.addChild(ss);
+*/
+    };
+    Main.prototype.click = function (evt) {
+        this.evm.showAllElement();
+        /*this.drawd();
+        var rel = LinkLogic.isHaveLine();
+        console.log(rel);
+        console.log(LinkLogic.lines);
+
+        rel = LinkLogic.isNextHaveLine();
+        console.log("是否存在可消除的方块",rel);
+*/
+        //LinkLogic.changeOrder();
+        // this.drawd();
+        //this.darwbitmap();
+        //this.move();
+    };
+    Main.prototype.move = function () {
+        var l = this.els.length;
+        var lo = 0;
+        var xx = 0;
+        var yy = 0;
+        var ll = (GameData.stageW - 40) / GameData.MaxColumn;
+        for (var i = 0; i < l; i++) {
+            lo = GameData.elements[Number(this.els[i].name)].location;
+            yy = (GameData.stageH - (GameData.stageW - 30) / 6 - 60) - ll * GameData.MaxColumn + ll * Math.floor(lo / 8);
+            xx = 20 + ll * (lo % 8);
+            egret.Tween.get(this.els[i]).to({ x: (xx + ll / 2), y: (yy + ll / 2) }, 700, egret.Ease.cubicInOut);
         }
     };
-    /**
-     * 创建游戏场景
-     * Create a game scene
-     */
-    Main.prototype.createGameScene = function () {
-        var sky = this.createBitmapByName("bg_jpg");
-        this.addChild(sky);
-        var stageW = this.stage.stageWidth;
-        var stageH = this.stage.stageHeight;
-        sky.width = stageW;
-        sky.height = stageH;
-        var topMask = new egret.Shape();
-        topMask.graphics.beginFill(0x000000, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW, 172);
-        topMask.graphics.endFill();
-        topMask.y = 33;
-        this.addChild(topMask);
-        var icon = this.createBitmapByName("egret_icon_png");
-        this.addChild(icon);
-        icon.x = 26;
-        icon.y = 33;
-        var line = new egret.Shape();
-        line.graphics.lineStyle(2, 0xffffff);
-        line.graphics.moveTo(0, 0);
-        line.graphics.lineTo(0, 117);
-        line.graphics.endFill();
-        line.x = 172;
-        line.y = 61;
-        this.addChild(line);
-        var colorLabel = new egret.TextField();
-        colorLabel.textColor = 0xffffff;
-        colorLabel.width = stageW - 172;
-        colorLabel.textAlign = "center";
-        colorLabel.text = "Hello Egret";
-        colorLabel.size = 24;
-        colorLabel.x = 172;
-        colorLabel.y = 80;
-        this.addChild(colorLabel);
-        var textfield = new egret.TextField();
-        this.addChild(textfield);
-        textfield.alpha = 0;
-        textfield.width = stageW - 172;
-        textfield.textAlign = egret.HorizontalAlign.CENTER;
-        textfield.size = 24;
-        textfield.textColor = 0xffffff;
-        textfield.x = 172;
-        textfield.y = 135;
-        this.textfield = textfield;
-        //根据name关键字，异步获取一个json配置文件，name属性请参考resources/resource.json配置文件的内容。
-        // Get asynchronously a json configuration file according to name keyword. As for the property of name please refer to the configuration file of resources/resource.json.
-        RES.getResAsync("description_json", this.startAnimation, this);
-    };
-    /**
-     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
-     * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
-     */
-    Main.prototype.createBitmapByName = function (name) {
-        var result = new egret.Bitmap();
-        var texture = RES.getRes(name);
-        result.texture = texture;
-        return result;
-    };
-    /**
-     * 描述文件加载成功，开始播放动画
-     * Description file loading is successful, start to play the animation
-     */
-    Main.prototype.startAnimation = function (result) {
-        var _this = this;
-        var parser = new egret.HtmlTextParser();
-        var textflowArr = result.map(function (text) { return parser.parse(text); });
-        var textfield = this.textfield;
-        var count = -1;
-        var change = function () {
-            count++;
-            if (count >= textflowArr.length) {
-                count = 0;
+    Main.prototype.darwbitmap = function () {
+        this.els = new Array();
+        this.removeChildren();
+        this.bgc = new egret.Sprite();
+        this.addChild(this.bgc);
+        //先贴背景
+        var bg = new egret.Bitmap();
+        bg.texture = RES.getRes("background");
+        bg.width = GameData.stageW;
+        bg.height = GameData.stageH;
+        this.bgc.addChild(bg);
+        var ll = (GameData.stageW - 40) / GameData.MaxColumn;
+        for (var i = 0; i < GameData.MaxRow; i++) {
+            for (var t = 0; t < GameData.MaxColumn; t++) {
+                if (GameData.mapData[i][t] != -1) {
+                    var kuai = new egret.Bitmap();
+                    kuai.y = (GameData.stageH - (GameData.stageW - 30) / 6 - 60) - ll * GameData.MaxColumn + ll * i;
+                    kuai.x = 20 + ll * t;
+                    kuai.width = ll;
+                    kuai.height = ll;
+                    this.bgc.addChild(kuai);
+                    //处理边框
+                    if (i == 0) {
+                        var bb = new egret.Bitmap();
+                        bb.width = ll;
+                        bb.height = 6;
+                        bb.x = kuai.x; //kuai.x+3;
+                        bb.y = kuai.y - 3; //kuai.y-3;
+                        bb.texture = RES.getRes("bianheng_jpg");
+                        this.bgc.addChild(bb);
+                    }
+                    if (i == (GameData.MaxRow - 1)) {
+                        var bba = new egret.Bitmap();
+                        bba.width = ll;
+                        bba.height = 6;
+                        bba.x = kuai.x; //kuai.x+3;
+                        bba.y = ll + kuai.y + 3; //kuai.y-3;
+                        bba.scaleY = -1;
+                        bba.texture = RES.getRes("bianheng_jpg");
+                        this.bgc.addChild(bba);
+                    }
+                    if (t == 0) {
+                        var bbf = new egret.Bitmap();
+                        bbf.width = 6;
+                        bbf.height = ll;
+                        bbf.x = kuai.x - 3; //kuai.x+3;
+                        bbf.y = kuai.y; //kuai.y-3;
+                        bbf.texture = RES.getRes("bianshu_jpg");
+                        this.bgc.addChild(bbf);
+                    }
+                    if (t == (GameData.MaxColumn - 1)) {
+                        var bbd = new egret.Bitmap();
+                        bbd.width = 6;
+                        bbd.height = ll;
+                        bbd.x = ll + kuai.x + 3; //kuai.x+3;
+                        bbd.y = kuai.y; //kuai.y-3;
+                        bbd.texture = RES.getRes("bianshu_jpg");
+                        bbd.scaleX = -1;
+                        this.bgc.addChild(bbd);
+                    }
+                    if ((i % 2 == 0 && t % 2 == 0) || (i % 2 == 1 && t % 2 == 1)) {
+                        kuai.texture = RES.getRes("elementbg1");
+                    }
+                    else {
+                        kuai.texture = RES.getRes("elementbg2");
+                    }
+                    var el = new egret.Sprite();
+                    var ele = new egret.Bitmap();
+                    ele.texture = RES.getRes("e" + GameData.elements[GameData.mapData[i][t]].type + "_png");
+                    ele.width = kuai.width - 10;
+                    ele.height = kuai.height - 10;
+                    ele.x = -1 * ele.width / 2;
+                    ele.y = -1 * ele.height / 2;
+                    el.addChild(ele);
+                    el.x = kuai.x + kuai.width / 2;
+                    el.y = kuai.y + kuai.height / 2;
+                    el.cacheAsBitmap = true;
+                    this.addChild(el);
+                    this.els.push(el);
+                    el.name = GameData.elements[GameData.mapData[i][t]].id.toString();
+                }
             }
-            var textFlow = textflowArr[count];
-            // 切换描述内容
-            // Switch to described content
-            textfield.textFlow = textFlow;
-            var tw = egret.Tween.get(textfield);
-            tw.to({ "alpha": 1 }, 200);
-            tw.wait(2000);
-            tw.to({ "alpha": 0 }, 200);
-            tw.call(change, _this);
-        };
-        change();
+        }
+        this.bgc.cacheAsBitmap = true;
+    };
+    Main.prototype.drawd = function () {
+        this.removeChildren();
+        var color = 0xffffff;
+        for (var i = 0; i < GameData.MaxRow; i++) {
+            for (var t = 0; t < GameData.MaxColumn; t++) {
+                if (GameData.mapData[i][t] != -1) {
+                    var shp = new egret.Shape();
+                    switch (GameData.elements[GameData.mapData[i][t]].type) {
+                        case "0":
+                            color = 0x0000ff;
+                            break;
+                        case "1":
+                            color = 0xff0000;
+                            break;
+                        case "2":
+                            color = 0x00ff00;
+                            break;
+                        case "3":
+                            color = 0xff00ff;
+                            break;
+                        case "4":
+                            color = 0x00ffff;
+                            break;
+                        case "5":
+                            color = 0xffffff;
+                            break;
+                    }
+                    shp.graphics.beginFill(color);
+                    shp.graphics.lineStyle(1, 0);
+                    var ll = (GameData.stageW - 40) / GameData.MaxColumn;
+                    shp.graphics.drawRect(0, 0, ll, ll);
+                    shp.graphics.endFill();
+                    shp.y = (GameData.stageH - (GameData.stageW - 30) / 6 - 60) - ll * GameData.MaxColumn + ll * i;
+                    shp.x = 20 + ll * t;
+                    //console.log(shp.x,shp.y);
+                    this.addChild(shp);
+                }
+            }
+        }
+        var ww = (GameData.stageW - 60) / 6;
+        var yy = GameData.stageH - ww - 30;
+        for (var q = 0; q < 6; q++) {
+            var sh = new egret.Shape();
+            sh.graphics.beginFill(0x00ffff);
+            sh.graphics.lineStyle(3, 0xff0000);
+            sh.graphics.drawRect(0, 0, ww, ww);
+            sh.graphics.endFill();
+            sh.x = 30 + ww * q;
+            sh.y = yy;
+            this.addChild(sh);
+        }
     };
     return Main;
 }(egret.DisplayObjectContainer));

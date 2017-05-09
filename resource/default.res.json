@@ -1,30 +1,260 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,egret_icon_png,description_json,l1_json",
-			"name": "preload"
+			"name": "preload",
+			"keys": "background_jpg,baizi_png,bianheng_jpg,bianjiao_png,bianshu_jpg,catfoucs_png,chanzi_png,chanzidisable_png,checkmark_png,chengzi_png,e0_png,e1_png,e2_png,e3_png,e4_png,e5_png,elementbg1_png,elementbg2_png,foucsmc 2_json,foucsmc 2_png,foucsmc_json,foucsmc_png,gameoverpanel_fail_png,gameoverpanel_success_png,gameovertitle_png,gongzi_png,l1_json,levelreqbg_png,levelreqtitle_png,number_fnt,number_png,numberdisable_fnt,numberdisable_png,propbg_png,propbox_png,propboxactive_png,propboxdisable_png,shizi_png,star_png,starbox_png,sursteptitle_png,tongse_png,tongsedisable_png,zhadan_png,zhadandisable_png,zhenghang_png,zhenghangdisable_png,zhenglie_png,zhengliedisable_png,resource_json"
 		}
 	],
 	"resources": [
 		{
-			"name": "bg_jpg",
+			"name": "background_jpg",
 			"type": "image",
-			"url": "assets/bg.jpg"
+			"url": "configs/background.jpg"
 		},
 		{
-			"name": "egret_icon_png",
+			"name": "baizi_png",
 			"type": "image",
-			"url": "assets/egret_icon.png"
+			"url": "configs/baizi.png"
 		},
 		{
-			"name": "description_json",
+			"name": "bianheng_jpg",
+			"type": "image",
+			"url": "configs/bianheng.jpg"
+		},
+		{
+			"name": "bianjiao_png",
+			"type": "image",
+			"url": "configs/bianjiao.png"
+		},
+		{
+			"name": "bianshu_jpg",
+			"type": "image",
+			"url": "configs/bianshu.jpg"
+		},
+		{
+			"name": "catfoucs_png",
+			"type": "image",
+			"url": "configs/catfoucs.png"
+		},
+		{
+			"name": "chanzi_png",
+			"type": "image",
+			"url": "configs/chanzi.png"
+		},
+		{
+			"name": "chanzidisable_png",
+			"type": "image",
+			"url": "configs/chanzidisable.png"
+		},
+		{
+			"name": "checkmark_png",
+			"type": "image",
+			"url": "configs/checkmark.png"
+		},
+		{
+			"name": "chengzi_png",
+			"type": "image",
+			"url": "configs/chengzi.png"
+		},
+		{
+			"name": "e0_png",
+			"type": "image",
+			"url": "configs/e0.png"
+		},
+		{
+			"name": "e1_png",
+			"type": "image",
+			"url": "configs/e1.png"
+		},
+		{
+			"name": "e2_png",
+			"type": "image",
+			"url": "configs/e2.png"
+		},
+		{
+			"name": "e3_png",
+			"type": "image",
+			"url": "configs/e3.png"
+		},
+		{
+			"name": "e4_png",
+			"type": "image",
+			"url": "configs/e4.png"
+		},
+		{
+			"name": "e5_png",
+			"type": "image",
+			"url": "configs/e5.png"
+		},
+		{
+			"name": "elementbg1_png",
+			"type": "image",
+			"url": "configs/elementbg1.png"
+		},
+		{
+			"name": "elementbg2_png",
+			"type": "image",
+			"url": "configs/elementbg2.png"
+		},
+		{
+			"name": "foucsmc 2_json",
 			"type": "json",
-			"url": "config/description.json"
+			"url": "configs/foucsmc 2.json"
+		},
+		{
+			"name": "foucsmc 2_png",
+			"type": "image",
+			"url": "configs/foucsmc 2.png"
+		},
+		{
+			"name": "foucsmc_json",
+			"type": "json",
+			"url": "configs/foucsmc.json"
+		},
+		{
+			"name": "foucsmc_png",
+			"type": "image",
+			"url": "configs/foucsmc.png"
+		},
+		{
+			"name": "gameoverpanel_fail_png",
+			"type": "image",
+			"url": "configs/gameoverpanel_fail.png"
+		},
+		{
+			"name": "gameoverpanel_success_png",
+			"type": "image",
+			"url": "configs/gameoverpanel_success.png"
+		},
+		{
+			"name": "gameovertitle_png",
+			"type": "image",
+			"url": "configs/gameovertitle.png"
+		},
+		{
+			"name": "gongzi_png",
+			"type": "image",
+			"url": "configs/gongzi.png"
 		},
 		{
 			"name": "l1_json",
 			"type": "json",
-			"url": "res/l1.json"
+			"url": "configs/l1.json"
+		},
+		{
+			"name": "levelreqbg_png",
+			"type": "image",
+			"url": "configs/levelreqbg.png"
+		},
+		{
+			"name": "levelreqtitle_png",
+			"type": "image",
+			"url": "configs/levelreqtitle.png"
+		},
+		{
+			"name": "number_fnt",
+			"type": "font",
+			"url": "configs/number.fnt"
+		},
+		{
+			"name": "number_png",
+			"type": "image",
+			"url": "configs/number.png"
+		},
+		{
+			"name": "numberdisable_fnt",
+			"type": "font",
+			"url": "configs/numberdisable.fnt"
+		},
+		{
+			"name": "numberdisable_png",
+			"type": "image",
+			"url": "configs/numberdisable.png"
+		},
+		{
+			"name": "propbg_png",
+			"type": "image",
+			"url": "configs/propbg.png"
+		},
+		{
+			"name": "propbox_png",
+			"type": "image",
+			"url": "configs/propbox.png"
+		},
+		{
+			"name": "propboxactive_png",
+			"type": "image",
+			"url": "configs/propboxactive.png"
+		},
+		{
+			"name": "propboxdisable_png",
+			"type": "image",
+			"url": "configs/propboxdisable.png"
+		},
+		{
+			"name": "shizi_png",
+			"type": "image",
+			"url": "configs/shizi.png"
+		},
+		{
+			"name": "star_png",
+			"type": "image",
+			"url": "configs/star.png"
+		},
+		{
+			"name": "starbox_png",
+			"type": "image",
+			"url": "configs/starbox.png"
+		},
+		{
+			"name": "sursteptitle_png",
+			"type": "image",
+			"url": "configs/sursteptitle.png"
+		},
+		{
+			"name": "tongse_png",
+			"type": "image",
+			"url": "configs/tongse.png"
+		},
+		{
+			"name": "tongsedisable_png",
+			"type": "image",
+			"url": "configs/tongsedisable.png"
+		},
+		{
+			"name": "zhadan_png",
+			"type": "image",
+			"url": "configs/zhadan.png"
+		},
+		{
+			"name": "zhadandisable_png",
+			"type": "image",
+			"url": "configs/zhadandisable.png"
+		},
+		{
+			"name": "zhenghang_png",
+			"type": "image",
+			"url": "configs/zhenghang.png"
+		},
+		{
+			"name": "zhenghangdisable_png",
+			"type": "image",
+			"url": "configs/zhenghangdisable.png"
+		},
+		{
+			"name": "zhenglie_png",
+			"type": "image",
+			"url": "configs/zhenglie.png"
+		},
+		{
+			"name": "zhengliedisable_png",
+			"type": "image",
+			"url": "configs/zhengliedisable.png"
+		},
+		{
+			"name": "resource_json",
+			"type": "json",
+			"url": "resource.json"
 		}
 	]
 }
